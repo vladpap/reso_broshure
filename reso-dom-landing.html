@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>РЕСО-ДОМ. Перезагрузка</title>
+<style>
+  :root{
+    --green-900:#0A5C30;
+    --green-800:#0D6E39;
+    --green-700:#0F8A45;
+    --green-600:#12A050;
+    --green-tint:#EAF7EE;
+    --green-tint-2:#DCF1E4;
+    --orange:#E8541E;
+    --orange-tint:#FDEDE6;
+    --blue:#1C8FE0;
+    --blue-tint:#E7F3FC;
+    --red:#DE4430;
+    --red-tint:#FBE9E6;
+    --cream:#FAF6EE;
+    --cream-2:#F3EDE0;
+    --ink:#182A20;
+    --muted:#5B6B61;
+    --border:#E5DECE;
+    --white:#FFFFFF;
+    --display: -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    --body: -apple-system, "SF Pro Text", system-ui, sans-serif;
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--body);
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit;}
+  .icon{width:26px; height:26px; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+  .icon-sm{width:20px; height:20px;}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 32px;}
+  .eyebrow{
+    font-family:var(--serif); font-style:italic; font-size:15px;
+    color:var(--orange); letter-spacing:.02em; margin-bottom:10px; display:block;
+  }
+  h1,h2,h3{font-family:var(--display); font-weight:800; letter-spacing:-0.02em; color:var(--green-900);}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--orange); color:#fff; font-family:var(--display); font-weight:700;
+    font-size:16px; padding:15px 28px; border-radius:100px; border:none; cursor:pointer;
+    text-decoration:none; transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:0 8px 20px -6px rgba(232,84,30,.55);
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 12px 24px -6px rgba(232,84,30,.65);}
+  .btn.ghost{
+    background:transparent; color:var(--white); border:1.5px solid rgba(255,255,255,.55);
+    box-shadow:none;
+  }
+  .btn.ghost:hover{background:rgba(255,255,255,.12);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,246,238,.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{display:flex; align-items:center; justify-content:space-between; height:76px;}
+  .logo{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:800; font-size:20px; color:var(--green-800);}
+  .logo small{display:block; font-family:var(--body); font-weight:600; font-size:10px; letter-spacing:.16em; color:var(--muted); margin-top:-2px;}
+  .nav-links{display:flex; gap:32px; font-size:15px; font-weight:600; color:var(--green-900);}
+  .nav-links a{opacity:.75; transition:opacity .15s;}
+  .nav-links a:hover{opacity:1;}
+  .nav-phone{font-family:var(--display); font-weight:700; font-size:16px; color:var(--green-900); white-space:nowrap;}
+  @media (max-width:860px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; overflow:hidden;
+    background:linear-gradient(175deg,var(--green-900) 0%, var(--green-800) 46%, var(--green-700) 100%);
+    color:#fff; padding:96px 0 0;
+  }
+  .hero .wrap{display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center;}
+  .hero-tag{
+    display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25); padding:7px 16px 7px 10px; border-radius:100px;
+    font-size:13px; font-weight:700; letter-spacing:.03em; margin-bottom:26px;
+  }
+  .hero-tag .icon{width:16px;height:16px; color:var(--orange);}
+  .hero h1{font-size:56px; line-height:1.02; color:#fff; margin-bottom:22px;}
+  .hero h1 em{font-style:normal; color:#B9F0CE;}
+  .hero p.lead{font-size:19px; color:rgba(255,255,255,.82); max-width:480px; margin-bottom:36px;}
+  .hero-cta{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px;}
+  .hero-note{font-size:13px; color:rgba(255,255,255,.55); max-width:420px;}
+  .hero-art{position:relative; height:440px;}
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr; text-align:left;}
+    .hero h1{font-size:40px;}
+    .hero-art{height:300px; order:-1;}
+  }
+
+  /* ---------- SECTION shells ---------- */
+  section{padding:88px 0;}
+  .section-head{max-width:640px; margin-bottom:48px;}
+  .section-head h2{font-size:36px; line-height:1.08;}
+  .section-head p{color:var(--muted); font-size:16.5px; margin-top:14px;}
+  .band{background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .band-tint{background:var(--green-tint);}
+
+  /* ---------- WHAT TO INSURE ---------- */
+  .insure-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:20px; overflow:hidden;}
+  .insure-card{background:#fff; padding:30px 22px; display:flex; flex-direction:column; gap:16px; min-height:190px;}
+  .insure-card .icon-badge{
+    width:52px; height:52px; border-radius:14px; background:var(--green-tint);
+    display:flex; align-items:center; justify-content:center; color:var(--green-700);
+  }
+  .insure-card span{font-size:14.5px; font-weight:600; color:var(--ink); line-height:1.35;}
+  @media (max-width:900px){ .insure-grid{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- PROGRAMS TABLE ---------- */
+  .table-scroll{overflow-x:auto; border-radius:20px; border:1px solid var(--border); background:#fff;}
+  table.programs{width:100%; border-collapse:collapse; min-width:680px;}
+  table.programs th, table.programs td{padding:16px 18px; text-align:center; border-bottom:1px solid var(--border);}
+  table.programs th{font-family:var(--display); font-size:14px; letter-spacing:.03em;}
+  table.programs thead tr th:first-child{background:transparent;}
+  table.programs thead th{background:var(--green-800); color:#fff; padding-top:20px; padding-bottom:20px;}
+  table.programs thead th.head-label{background:var(--green-900); text-align:left;}
+  table.programs tbody th{
+    text-align:left; font-family:var(--body); font-weight:700; font-size:14.5px; color:var(--ink);
+    background:var(--cream); white-space:nowrap;
+  }
+  table.programs tbody tr:nth-child(odd) td, table.programs tbody tr:nth-child(odd) th{background-color:rgba(15,138,69,.035);}
+  table.programs tbody tr:last-child td, table.programs tbody tr:last-child th{border-bottom:none;}
+  .mark{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%;}
+  .mark.yes{background:var(--green-tint-2); color:var(--green-700);}
+  .mark.no{background:var(--red-tint); color:var(--red);}
+  .mark.pay{background:var(--blue-tint); color:var(--blue); font-family:var(--display); font-weight:800; font-size:14px;}
+  .legend{display:flex; gap:28px; flex-wrap:wrap; margin-top:22px; font-size:13.5px; color:var(--muted);}
+  .legend div{display:flex; align-items:center; gap:10px;}
+
+  /* ---------- RISK CARDS ---------- */
+  .risk-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  .risk-card{
+    background:#fff; border:1px solid var(--border); border-radius:20px; padding:30px 32px; position:relative;
+  }
+  .risk-card .icon-badge{
+    width:48px; height:48px; border-radius:12px; background:var(--orange-tint); color:var(--orange);
+    display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+  }
+  .risk-card h3{font-size:19px; margin-bottom:10px;}
+  .risk-card p{color:var(--muted); font-size:14.5px; margin-bottom:14px;}
+  .risk-card ul{list-style:none; display:flex; flex-direction:column; gap:8px;}
+  .risk-card li{font-size:14px; color:var(--ink); display:flex; gap:9px; align-items:flex-start;}
+  .risk-card li::before{content:""; width:5px; height:5px; border-radius:50%; background:var(--green-600); margin-top:8px; flex-shrink:0;}
+  .badge-new{
+    position:absolute; top:26px; right:28px; background:var(--orange); color:#fff; font-size:10.5px;
+    font-weight:800; letter-spacing:.06em; padding:5px 10px; border-radius:6px; transform:rotate(2deg);
+  }
+  @media (max-width:800px){ .risk-grid{grid-template-columns:1fr;} }
+
+  /* base risks strip */
+  .chip-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:34px;}
+  .chip{
+    display:flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--border);
+    padding:9px 14px 9px 10px; border-radius:100px; font-size:13.5px; font-weight:600; color:var(--green-900);
+  }
+  .chip .icon-sm{color:var(--green-700);}
+
+  /* ---------- SERVICES / OPTIONS ---------- */
+  .cards3{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .cards4{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .feature-card{
+    background:#fff; border:1px solid var(--border); border-radius:18px; padding:26px; position:relative;
+  }
+  .feature-card .icon-badge{
+    width:44px; height:44px; border-radius:12px; background:var(--green-tint); color:var(--green-700);
+    display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+  }
+  .feature-card h3{font-size:16.5px; margin-bottom:8px;}
+  .feature-card p{font-size:13.8px; color:var(--muted);}
+  .feature-card .cap{
+    display:inline-block; margin-top:12px; font-size:12.5px; font-weight:700; color:var(--green-700);
+    background:var(--green-tint); padding:4px 10px; border-radius:8px;
+  }
+  @media (max-width:900px){ .cards3{grid-template-columns:repeat(2,1fr);} .cards4{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .cards3{grid-template-columns:1fr;} .cards4{grid-template-columns:1fr;} }
+
+  /* ---------- EXAMPLES ---------- */
+  .examples{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  .example-card{background:#fff; border:1px solid var(--border); border-radius:22px; padding:32px; overflow:hidden;}
+  .example-card .tag{
+    display:inline-block; font-family:var(--display); font-weight:800; font-size:12.5px; letter-spacing:.06em;
+    color:var(--orange); background:var(--orange-tint); padding:5px 12px; border-radius:8px; margin-bottom:14px;
+  }
+  .example-card h3{font-size:21px; margin-bottom:6px;}
+  .example-card .desc{font-size:13.8px; color:var(--muted); margin-bottom:22px;}
+  table.price{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.price th{text-align:center; font-weight:700; color:var(--green-900); padding:8px 4px; border-bottom:2px solid var(--border);}
+  table.price td{text-align:center; padding:12px 4px; border-bottom:1px solid var(--border);}
+  table.price td:first-child, table.price th:first-child{text-align:left; font-weight:600; color:var(--ink);}
+  table.price tr:last-child td{border-bottom:none; font-weight:800; color:var(--green-700);}
+  @media (max-width:800px){ .examples{grid-template-columns:1fr;} }
+
+  /* ---------- CTA / FOOTER ---------- */
+  .cta{
+    background:linear-gradient(120deg,var(--green-900), var(--green-700));
+    color:#fff; border-radius:28px; padding:60px 56px; display:flex; align-items:center; justify-content:space-between; gap:32px;
+  }
+  .cta h2{color:#fff; font-size:32px; max-width:480px;}
+  .cta p{color:rgba(255,255,255,.78); margin-top:10px; max-width:440px;}
+  @media (max-width:800px){ .cta{flex-direction:column; text-align:center; padding:44px 28px;} }
+
+  footer{background:var(--green-900); color:rgba(255,255,255,.72); padding:56px 0 32px; margin-top:0;}
+  .foot-grid{display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap; padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,.14);}
+  .foot-logo{display:flex; align-items:center; gap:10px; color:#fff; font-family:var(--display); font-weight:800; font-size:20px;}
+  .foot-contact{font-size:14px; line-height:1.9;}
+  .foot-legal{font-size:11.5px; color:rgba(255,255,255,.45); margin-top:24px; line-height:1.7;}
+
+  .reload-spin{animation:spin 9s linear infinite; transform-origin:center;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<!-- ============ SVG ICON SPRITE ============ -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-logo" viewBox="0 0 24 24"><path d="M12 2 L20 7 L20 17 L12 22 L4 17 L4 7 Z" stroke-width="1.8"/><path d="M12 7 L16 9.5 L16 14.5 L12 17 L8 14.5 L8 9.5 Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6 3h3l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v3a2 2 0 0 1-2 2C9.6 19 5 14.4 5 5a2 2 0 0 1 1-2Z"/></symbol>
+    <symbol id="i-reload" viewBox="0 0 24 24"><path d="M20 11A8 8 0 1 0 18.6 16"/><path d="M20 5v6h-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></symbol>
+    <symbol id="i-cross" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-ruble" viewBox="0 0 24 24"><path d="M8 4h4.5a3.7 3.7 0 0 1 0 7.4H8M8 4v15M6 11.4h6M6 15h6"/></symbol>
+
+    <!-- what to insure -->
+    <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/><circle cx="12" cy="9" r=".6" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-garage" viewBox="0 0 24 24"><path d="M3 10 12 4l9 6"/><path d="M4 9v11h16V9"/><path d="M7 20v-6h10v6"/><path d="M8 15h8M8 17.3h8"/></symbol>
+    <symbol id="i-paint" viewBox="0 0 24 24"><rect x="4" y="4" width="10" height="6" rx="1.2"/><path d="M9 10v3.5c0 1-.6 1.5-1.6 1.5H8c-1 0-1.6.6-1.6 1.6V20"/><rect x="5.4" y="16.3" width="3.2" height="3.7" rx=".8"/><path d="M14 6.2h3.5"/></symbol>
+    <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M5 12V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v3"/><path d="M3 12h18v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/><path d="M4 17v2M20 17v2"/><path d="M17 4v6"/><circle cx="17" cy="3.4" r="1" /></symbol>
+    <symbol id="i-fence" viewBox="0 0 24 24"><path d="M5 21V7l2-3 2 3v14M11 21V7l2-3 2 3v14M17 21V7l2-3 2 3v14"/><path d="M2 11h20M2 16h20"/></symbol>
+
+    <!-- risks -->
+    <symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 3c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1.5-1-2-1-3.3 1.4.7 3 2.6 3 5.3a5 5 0 0 1-10 0c0-4 3.5-5.8 5-10Z"/></symbol>
+    <symbol id="i-storm" viewBox="0 0 24 24"><path d="M7 16a4 4 0 0 1 .5-8 5 5 0 0 1 9.6.6A3.5 3.5 0 0 1 17 16Z"/><path d="M13 16l-2 4M9 16l-1.5 4"/></symbol>
+    <symbol id="i-burglar" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15.3" r="1.1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-alert-person" viewBox="0 0 24 24"><circle cx="9" cy="6" r="2.4"/><path d="M4 20v-2a5 5 0 0 1 5-5h1"/><path d="M18 10v5M18 18v.1"/></symbol>
+    <symbol id="i-door" viewBox="0 0 24 24"><rect x="5" y="3" width="12" height="18" rx="1"/><circle cx="14" cy="12" r=".7" fill="currentColor" stroke="none"/><path d="M17 8l4-1v10l-4-1"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 0 1-10 0Z"/><path d="M12 16v2M10.5 21h3"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-2-1.4L14 21l-2-1.4L10 21l-2-1.4L6 21Z"/><path d="M9 8h6M9 11.5h6M9 15h4"/></symbol>
+    <symbol id="i-broom" viewBox="0 0 24 24"><path d="M20 4 10 14"/><path d="M8 12l4 4-5 5-3-3Z"/><path d="M6 16l-2 2"/></symbol>
+    <symbol id="i-water" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/></symbol>
+    <symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 3 7 11h3l-4 7h5v3M12 3l5 8h-3l4 7"/></symbol>
+    <symbol id="i-paw" viewBox="0 0 24 24"><circle cx="7" cy="9" r="1.6"/><circle cx="12" cy="6.5" r="1.6"/><circle cx="17" cy="9" r="1.6"/><path d="M12 12c3 0 5 2.2 5 4.6 0 2-1.6 3.4-3.4 2.7-1-.4-2.2-.4-3.2 0-1.8.7-3.4-.7-3.4-2.7 0-2.4 2-4.6 5-4.6Z"/></symbol>
+    <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8h11a2.5 2.5 0 1 0-2.3-3.5"/><path d="M3 13h15a2.5 2.5 0 1 1-2.3 3.5"/><path d="M3 18h9"/></symbol>
+    <symbol id="i-glass" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><path d="M5 5l14 14M19 5 5 19" opacity=".55"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3.4 8-7 9-3.6-1-7-4-7-9V6Z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M21 12h-2.5M5.5 12H3M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8M18.4 18.4l-1.8-1.8M7.4 7.4 5.6 5.6"/></symbol>
+
+    <!-- services -->
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="M3 13l7-2 5-8 2 1-3 7 5 1 2-3 2 1-3 5-9 1-4 4-2-1 2-4-4-1Z"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2-2Z"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><rect x="2" y="7" width="11" height="9" rx="1"/><path d="M13 10h4l3 3v3h-7Z"/><circle cx="6.5" cy="18" r="1.6"/><circle cx="16.5" cy="18" r="1.6"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 19v-8a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/><path d="M3 19v-3h18v3"/><path d="M13 12h6a2 2 0 0 1 2 2v2"/><circle cx="7" cy="10.5" r="1.3"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M8 21h8M5 7h6M5 7 2 13a3 3 0 0 0 6 0ZM18 7l-3-2M18 7l3 6a3 3 0 0 1-6 0Z"/></symbol>
+
+    <!-- options -->
+    <symbol id="i-percent" viewBox="0 0 24 24"><circle cx="7" cy="7" r="2.2"/><circle cx="17" cy="17" r="2.2"/><path d="M6 18 18 6"/></symbol>
+    <symbol id="i-doc-check" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7Z"/><path d="M14 3v4h4"/><path d="M9.5 14l2 2 4-4"/></symbol>
+    <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="9" cy="7" rx="6" ry="3"/><path d="M3 7v5c0 1.7 2.7 3 6 3s6-1.3 6-3V7"/><path d="M9 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><ellipse cx="15" cy="12" rx="6" ry="3"/></symbol>
+    <symbol id="i-infinity" viewBox="0 0 24 24"><path d="M6.5 8.5a3.5 3.5 0 1 0 0 7c2.5 0 4-2.2 5.5-3.5 1.5-1.3 3-3.5 5.5-3.5a3.5 3.5 0 1 1 0 7c-2.5 0-4-2.2-5.5-3.5-1.5-1.3-3-3.5-5.5-3.5Z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ NAV ============ -->
+<header>
+  <div class="wrap nav">
+    <div class="logo">
+      <svg class="icon" style="color:var(--green-700); width:30px; height:30px;"><use href="#i-logo"/></svg>
+      РЕСО<span style="color:var(--orange)">-ДОМ</span>
+      <small>ГАРАНТИЯ&nbsp;·&nbsp;ПЕРЕЗАГРУЗКА</small>
+    </div>
+    <nav class="nav-links">
+      <a href="#insure">Что застраховать</a>
+      <a href="#programs">Программы</a>
+      <a href="#risks">Риски</a>
+      <a href="#examples">Расчёты</a>
+    </nav>
+    <div class="nav-phone">+7&nbsp;(977)&nbsp;667&#8209;64&#8209;55</div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="hero-tag">
+        <svg class="icon reload-spin"><use href="#i-reload"/></svg>
+        Новые программы
+      </div>
+      <h1>Дом, дача, участок&nbsp;— <em>под защитой</em> на новых условиях</h1>
+      <p class="lead">РЕСО-ДОМ.&nbsp;Перезагрузка — обновлённые программы страхования загородных строений: от базового пожара до порывов ветра, аварий оборудования и юридической помощи.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#examples">Смотреть расчёты
+          <svg class="icon" style="width:18px;height:18px;color:#fff;"><use href="#i-arrow"/></svg>
+        </a>
+        <a class="btn ghost" href="#programs">Сравнить программы</a>
+      </div>
+      <p class="hero-note">Скидка 30% для клиентов РЕСО по автострахованию — уже учтена в примерах расчёта ниже.</p>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 480 440" style="width:100%; height:100%;">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#123B24"/>
+            <stop offset="100%" stop-color="#0F8A45" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="glow" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#FFD9A8" stop-opacity=".9"/>
+            <stop offset="100%" stop-color="#FFD9A8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="245" cy="150" r="120" fill="url(#glow)" opacity=".35"/>
+        <!-- ground -->
+        <ellipse cx="240" cy="410" rx="220" ry="18" fill="#08351E"/>
+        <!-- house body -->
+        <rect x="120" y="200" width="220" height="170" rx="4" fill="#DDEFE1"/>
+        <rect x="120" y="200" width="90" height="170" fill="#B9DEC4"/>
+        <!-- roof -->
+        <path d="M100 210 L230 130 L360 210 Z" fill="#0A5C30"/>
+        <path d="M100 210 L360 210 L360 222 L100 222 Z" fill="#08351E"/>
+        <!-- warm windows -->
+        <rect x="145" y="235" width="42" height="55" rx="2" fill="#FFC97A"/>
+        <rect x="205" y="235" width="42" height="55" rx="2" fill="#FFE3B0"/>
+        <rect x="265" y="235" width="42" height="55" rx="2" fill="#FFC97A"/>
+        <rect x="145" y="305" width="164" height="65" rx="2" fill="#FFCE8A"/>
+        <line x1="227" y1="305" x2="227" y2="370" stroke="#0A5C30" stroke-width="4"/>
+        <!-- door -->
+        <rect x="205" y="325" width="44" height="45" fill="#0A5C30"/>
+        <!-- chimney -->
+        <rect x="300" y="140" width="18" height="45" fill="#08351E"/>
+        <!-- trees -->
+        <path d="M60 400 C55 340 95 310 95 260 C95 310 135 340 130 400 Z" fill="#0D6E39"/>
+        <rect x="88" y="395" width="14" height="20" fill="#5A3A22"/>
+        <path d="M420 405 C416 360 448 335 448 295 C448 335 480 360 476 405 Z" fill="#0F8A45"/>
+        <rect x="441" y="400" width="12" height="16" fill="#5A3A22"/>
+        <!-- shield badge -->
+        <g transform="translate(330,290)">
+          <circle cx="34" cy="34" r="34" fill="#E8541E"/>
+          <svg x="14" y="14" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-shield"/></svg>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT TO INSURE ============ -->
+<section id="insure" class="band">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Покрытие</span>
+      <h2>Что можно застраховать</h2>
+      <p>От самого строения до забора и бассейна на участке — единый полис закрывает всё имущество на территории.</p>
+    </div>
+    <div class="insure-grid">
+      <div class="insure-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-house"/></svg></div>
+        <span>Коттедж, дачу, дуплекс</span>
+      </div>
+      <div class="insure-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-garage"/></svg></div>
+        <span>Баню, гараж, хозпостройки</span>
+      </div>
+      <div class="insure-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-paint"/></svg></div>
+        <span>Отделку и техническое оборудование дома</span>
+      </div>
+      <div class="insure-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-sofa"/></svg></div>
+        <span>Мебель, технику, электронику</span>
+      </div>
+      <div class="insure-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-fence"/></svg></div>
+        <span>Забор, бассейн, участок и инженерные системы</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMS ============ -->
+<section id="programs">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Тарифы</span>
+      <h2>Четыре программы — от базовой защиты до полного покрытия</h2>
+      <p>Чем выше программа, тем больше рисков включено сразу, без доплат.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="programs">
+        <thead>
+          <tr>
+            <th class="head-label">Риски и опции</th>
+            <th>Эконом</th>
+            <th>Стандарт</th>
+            <th>Оптимум</th>
+            <th>Премиум</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Базовые риски и опции</th>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+          </tr>
+          <tr>
+            <th>Залив, столкновение, действия животных</th>
+            <td><span class="mark no"><svg class="icon-sm"><use href="#i-cross"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+          </tr>
+          <tr>
+            <th>Природные воздействия</th>
+            <td><span class="mark no"><svg class="icon-sm"><use href="#i-cross"/></svg></span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+          </tr>
+          <tr>
+            <th>Ущерб по неосторожности</th>
+            <td><span class="mark no"><svg class="icon-sm"><use href="#i-cross"/></svg></span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+          </tr>
+          <tr>
+            <th>Военные риски и терроризм</th>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+          </tr>
+          <tr>
+            <th>Авария оборудования</th>
+            <td><span class="mark no"><svg class="icon-sm"><use href="#i-cross"/></svg></span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+          </tr>
+          <tr>
+            <th>Сервисы</th>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+          </tr>
+          <tr>
+            <th>Опции</th>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark pay">₽</span></td>
+            <td><span class="mark yes"><svg class="icon-sm"><use href="#i-check"/></svg></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <div><span class="mark yes" style="width:22px;height:22px;"><svg class="icon-sm" style="width:14px;height:14px;"><use href="#i-check"/></svg></span> включено в программу</div>
+      <div><span class="mark no" style="width:22px;height:22px;"><svg class="icon-sm" style="width:14px;height:14px;"><use href="#i-cross"/></svg></span> не предусмотрено</div>
+      <div><span class="mark pay" style="width:22px;height:22px; font-size:11px;">₽</span> можно включить за доплату</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RISKS ============ -->
+<section id="risks" class="band band-tint">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">В деталях</span>
+      <h2>Ключевые риски программы</h2>
+      <p>Помимо базового набора — пожар, кража, техногенная авария — в старших программах доступны расширенные риски.</p>
+    </div>
+
+    <div class="risk-grid">
+      <div class="risk-card">
+        <span class="badge-new">ОБНОВЛЕНО</span>
+        <div class="icon-badge"><svg class="icon"><use href="#i-wind"/></svg></div>
+        <h3>Природные воздействия</h3>
+        <p>Ущерб в результате погодных и природных явлений.</p>
+        <ul>
+          <li>Ветер свыше 10 м/с, давление снега на кровлю</li>
+          <li>Подтопление из-за осадков или таяния снега</li>
+          <li>Береговая и речная эрозия</li>
+          <li>Просадка грунта, аномальный холод</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <span class="badge-new">ОБНОВЛЕНО</span>
+        <div class="icon-badge"><svg class="icon"><use href="#i-glass"/></svg></div>
+        <h3>Ущерб по неосторожности</h3>
+        <p>Три риска на случай человеческого фактора.</p>
+        <ul>
+          <li>Бой стёкол, зеркал и стеклянных дверей</li>
+          <li>Непреднамеренный ущерб — забытое окно, нарушение ТБ</li>
+          <li>Повреждения при ремонтных работах в доме</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <span class="badge-new">ОБНОВЛЕНО</span>
+        <div class="icon-badge"><svg class="icon"><use href="#i-shield"/></svg></div>
+        <h3>Военные риски и терроризм</h3>
+        <p>Расширенная защита на фоне чрезвычайных обстоятельств.</p>
+        <ul>
+          <li>Ущерб от террористического акта или диверсии</li>
+          <li>Последствия военных действий и манёвров</li>
+          <li>Введение чрезвычайного или особого положения</li>
+        </ul>
+      </div>
+
+      <div class="risk-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-plug"/></svg></div>
+        <h3>Авария оборудования</h3>
+        <p>Покрывает именно технику и инженерные системы.</p>
+        <ul>
+          <li>Короткое замыкание и скачки напряжения</li>
+          <li>Ущерб из-за аварийного отключения энергии</li>
+          <li>Разморозка/заморозка отопления и труб</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chip-row">
+      <div class="chip"><svg class="icon-sm"><use href="#i-fire"/></svg>Пожар, удар молнии, взрыв</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-storm"/></svg>Стихийные бедствия</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-burglar"/></svg>Кража, грабёж, разбой</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-alert-person"/></svg>Противоправные действия третьих лиц</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-door"/></svg>Экстренное проникновение</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-gear"/></svg>Техногенная авария</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-receipt"/></svg>Оплата справок</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-broom"/></svg>Уборка территории</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-water"/></svg>Повреждение водой</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-tree"/></svg>Столкновение, удар</div>
+      <div class="chip"><svg class="icon-sm"><use href="#i-paw"/></svg>Действия животных</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Забота</span>
+      <h2>Сервисы, которые включаются в полис</h2>
+      <p>Пять сервисов помогают не только компенсировать ущерб, но и пережить его максимально комфортно.</p>
+    </div>
+    <div class="cards3">
+      <div class="feature-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-plane"/></svg></div>
+        <h3>Досрочное возвращение</h3>
+        <p>Транспортные расходы на возвращение из отпуска или командировки при страховом случае.</p>
+        <span class="cap">до 30 000 ₽</span>
+      </div>
+      <div class="feature-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-wrench"/></svg></div>
+        <h3>«Домовой-сервис»</h3>
+        <p>Сантехник, электрик и слесарь при авариях или поломках застрахованного имущества.</p>
+        <span class="cap">2×20 000 ₽ в год</span>
+      </div>
+      <div class="feature-card">
+        <span class="badge-new" style="top:22px; right:22px;">НОВОЕ</span>
+        <div class="icon-badge"><svg class="icon"><use href="#i-truck"/></svg></div>
+        <h3>Вывоз и хранение вещей</h3>
+        <p>Расходы на вывоз и временное хранение вещей на время ремонта после страхового случая.</p>
+        <span class="cap">до 20 000 ₽</span>
+      </div>
+      <div class="feature-card">
+        <span class="badge-new" style="top:22px; right:22px;">НОВОЕ</span>
+        <div class="icon-badge"><svg class="icon"><use href="#i-bed"/></svg></div>
+        <h3>Временное размещение</h3>
+        <p>Аренда гостиницы или жилья, если проживание в доме стало невозможным.</p>
+        <span class="cap">до 100 000 ₽</span>
+      </div>
+      <div class="feature-card">
+        <span class="badge-new" style="top:22px; right:22px;">НОВОЕ</span>
+        <div class="icon-badge"><svg class="icon"><use href="#i-scale"/></svg></div>
+        <h3>Юридическая помощь</h3>
+        <p>Консультации юристов по вопросам владения и распоряжения недвижимостью, помощь с документами.</p>
+        <span class="cap">2×20 000 ₽ в год</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPTIONS ============ -->
+<section class="band band-tint">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Гибкость</span>
+      <h2>Опции для максимальной выплаты</h2>
+      <p>Четыре опции убирают привычные ограничения страховых выплат.</p>
+    </div>
+    <div class="cards4">
+      <div class="feature-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-percent"/></svg></div>
+        <h3>Без износа</h3>
+        <p>Не учитываем износ материалов и деталей, нужных для ремонта имущества.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon-badge"><svg class="icon"><use href="#i-doc-check"/></svg></div>
+        <h3>Без справок</h3>
+        <p>Однократная выплата до 30 000 ₽ без справок из компетентных органов.</p>
+      </div>
+      <div class="feature-card">
+        <span class="badge-new" style="top:22px; right:22px;">НОВОЕ</span>
+        <div class="icon-badge"><svg class="icon"><use href="#i-coins"/></svg></div>
+        <h3>Без годных остатков</h3>
+        <p>При полном уничтожении платим 100% суммы, не вычитая стоимость уцелевших остатков.</p>
+      </div>
+      <div class="feature-card">
+        <span class="badge-new" style="top:22px; right:22px;">НОВОЕ</span>
+        <div class="icon-badge"><svg class="icon"><use href="#i-infinity"/></svg></div>
+        <h3>Без лимитов</h3>
+        <p>Платим реальный ущерб без лимитов по отдельным конструктивным элементам.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXAMPLES ============ -->
+<section id="examples">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Стоимость</span>
+      <h2>Примеры расчётов</h2>
+      <p>Постоянное проживание, без охраны, без сдачи в аренду, без примыкающих строений.</p>
+    </div>
+    <div class="examples">
+      <div class="example-card">
+        <span class="tag">ПРИМЕР 1</span>
+        <h3>Дом из негорючих материалов</h3>
+        <p class="desc">Завершённое строение стоимостью 8 млн ₽</p>
+        <table class="price">
+          <thead><tr><th></th><th>Эконом</th><th>Стандарт</th><th>Оптимум</th><th>Премиум</th></tr></thead>
+          <tbody>
+            <tr><td>Стандартный тариф</td><td>24 650 ₽</td><td>29 600 ₽</td><td>38 100 ₽</td><td>56 000 ₽</td></tr>
+            <tr><td>Со скидкой 30%*</td><td>17 250 ₽</td><td>20 700 ₽</td><td>26 700 ₽</td><td>39 200 ₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="example-card">
+        <span class="tag">ПРИМЕР 2</span>
+        <h3>Дом из горючих материалов</h3>
+        <p class="desc">Завершённое строение стоимостью 3 млн ₽</p>
+        <table class="price">
+          <thead><tr><th></th><th>Эконом</th><th>Стандарт</th><th>Оптимум</th><th>Премиум</th></tr></thead>
+          <tbody>
+            <tr><td>Стандартный тариф</td><td>14 850 ₽</td><td>17 850 ₽</td><td>22 950 ₽</td><td>33 750 ₽</td></tr>
+            <tr><td>Со скидкой 30%*</td><td>10 400 ₽</td><td>12 500 ₽</td><td>16 100 ₽</td><td>23 650 ₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p style="font-size:12.5px; color:var(--muted); margin-top:16px;">* Скидка 30% предоставляется клиентам РЕСО-Гарантия по автострахованию.</p>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section>
+  <div class="wrap">
+    <div class="cta">
+      <div>
+        <h2>Готовы застраховать дом на новых условиях?</h2>
+        <p>Оставьте заявку — рассчитаю стоимость полиса под ваш объект за один звонок.</br>Ваш персональный агент - Людмила Папина.</p>
+      </div>
+      <a class="btn" href="tel:+79776676455">
+        <svg class="icon" style="width:18px;height:18px;color:#fff;"><use href="#i-phone"/></svg>
+        +7&nbsp;(977)&nbsp;667&#8209;64&#8209;55
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">
+          <svg class="icon" style="width:26px;height:26px;"><use href="#i-logo"/></svg>
+          С НАМИ НАДЁЖНЕЕ!
+        </div>
+      </div>
+      <div class="foot-contact">
+        www.reso.ru
+      </div>
+    </div>
+    <div class="foot-legal">
+      САО «РЕСО-ГАРАНТИЯ» · Лицензии ЦБ РФ ОС №1209-03, ОС №1209-04, ОС №1209-05, СИ №1209, СЛ №1209, ПС №1209.<br>
+      Страница подготовлена на основе презентации «РЕСО-ДОМ. Перезагрузка» и носит информационный характер, не является публичной офертой.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
