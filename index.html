@@ -67,14 +67,24 @@
     background:rgba(250,246,238,.88); backdrop-filter:blur(10px);
     border-bottom:1px solid var(--border);
   }
-  .nav{display:flex; align-items:center; justify-content:space-between; height:76px;}
-  .logo{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:800; font-size:20px; color:var(--green-800);}
-  .logo small{display:block; font-family:var(--body); font-weight:600; font-size:10px; letter-spacing:.16em; color:var(--muted); margin-top:-2px;}
-  .nav-links{display:flex; gap:32px; font-size:15px; font-weight:600; color:var(--green-900);}
+  .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; height:76px;}
+  .logo{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:800; font-size:20px; color:var(--green-800); min-width:0;}
+  .logo small{display:block; font-family:var(--body); font-weight:600; font-size:10px; letter-spacing:.16em; color:var(--muted); margin-top:-2px; white-space:nowrap;}
+  .nav-links{display:flex; gap:32px; font-size:15px; font-weight:600; color:var(--green-900); flex-shrink:0;}
   .nav-links a{opacity:.75; transition:opacity .15s;}
   .nav-links a:hover{opacity:1;}
-  .nav-phone{font-family:var(--display); font-weight:700; font-size:16px; color:var(--green-900); white-space:nowrap;}
+  .nav-phone{font-family:var(--display); font-weight:700; font-size:16px; color:var(--green-900); white-space:nowrap; flex-shrink:0; text-decoration:none;}
   @media (max-width:860px){ .nav-links{display:none;} }
+  @media (max-width:640px){
+    .nav{height:64px;}
+    .logo{font-size:16px;}
+    .logo small{display:none;}
+    .nav-phone{font-size:13px;}
+  }
+  @media (max-width:380px){
+    .nav-phone{font-size:0;}
+    .nav-phone::before{content:"\260E"; font-size:20px;}
+  }
 
   /* ---------- HERO ---------- */
   .hero{
@@ -196,7 +206,8 @@
   }
   .example-card h3{font-size:21px; margin-bottom:6px;}
   .example-card .desc{font-size:13.8px; color:var(--muted); margin-bottom:22px;}
-  table.price{width:100%; border-collapse:collapse; font-size:13.5px;}
+  .price-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  table.price{width:100%; border-collapse:collapse; font-size:13.5px; min-width:420px;}
   table.price th{text-align:center; font-weight:700; color:var(--green-900); padding:8px 4px; border-bottom:2px solid var(--border);}
   table.price td{text-align:center; padding:12px 4px; border-bottom:1px solid var(--border);}
   table.price td:first-child, table.price th:first-child{text-align:left; font-weight:600; color:var(--ink);}
@@ -220,6 +231,38 @@
 
   .reload-spin{animation:spin 9s linear infinite; transform-origin:center;}
   @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* ---------- SMALL PHONES ---------- */
+  @media (max-width:480px){
+    .wrap{padding:0 18px;}
+    section{padding:56px 0;}
+
+    .hero{padding-top:88px;}
+    .hero h1{font-size:30px;}
+    .hero p.lead{font-size:16px;}
+    .hero-art{height:220px;}
+    .hero-cta{flex-direction:column; align-items:stretch;}
+    .hero-cta .btn{justify-content:center;}
+
+    .section-head h2{font-size:26px;}
+    .section-head p{font-size:15px;}
+
+    .insure-grid{grid-template-columns:1fr;}
+    .insure-card{min-height:0; padding:22px 20px;}
+
+    .risk-card{padding:24px 20px;}
+    .feature-card{padding:22px;}
+
+    table.programs th, table.programs td{padding:12px 10px;}
+
+    .example-card{padding:24px 20px;}
+
+    .cta{padding:36px 22px; border-radius:22px;}
+    .cta h2{font-size:24px;}
+    .cta .btn{width:100%; justify-content:center;}
+
+    .foot-grid{flex-direction:column; align-items:flex-start; gap:16px;}
+  }
 </style>
 </head>
 <body>
@@ -288,7 +331,7 @@
       <a href="#risks">Риски</a>
       <a href="#examples">Расчёты</a>
     </nav>
-    <div class="nav-phone">+7&nbsp;(977)&nbsp;667&#8209;64&#8209;55</div>
+    <a class="nav-phone" href="tel:+79776676455">+7&nbsp;(977)&nbsp;667&#8209;64&#8209;55</a>
   </div>
 </header>
 
@@ -645,6 +688,7 @@
         <span class="tag">ПРИМЕР 1</span>
         <h3>Дом из негорючих материалов</h3>
         <p class="desc">Завершённое строение стоимостью 8 млн ₽</p>
+        <div class="price-scroll">
         <table class="price">
           <thead><tr><th></th><th>Эконом</th><th>Стандарт</th><th>Оптимум</th><th>Премиум</th></tr></thead>
           <tbody>
@@ -652,11 +696,13 @@
             <tr><td>Со скидкой 30%*</td><td>17 250 ₽</td><td>20 700 ₽</td><td>26 700 ₽</td><td>39 200 ₽</td></tr>
           </tbody>
         </table>
+        </div>
       </div>
       <div class="example-card">
         <span class="tag">ПРИМЕР 2</span>
         <h3>Дом из горючих материалов</h3>
         <p class="desc">Завершённое строение стоимостью 3 млн ₽</p>
+        <div class="price-scroll">
         <table class="price">
           <thead><tr><th></th><th>Эконом</th><th>Стандарт</th><th>Оптимум</th><th>Премиум</th></tr></thead>
           <tbody>
@@ -664,6 +710,7 @@
             <tr><td>Со скидкой 30%*</td><td>10 400 ₽</td><td>12 500 ₽</td><td>16 100 ₽</td><td>23 650 ₽</td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
     <p style="font-size:12.5px; color:var(--muted); margin-top:16px;">* Скидка 30% предоставляется клиентам РЕСО-Гарантия по автострахованию.</p>
@@ -676,7 +723,7 @@
     <div class="cta">
       <div>
         <h2>Готовы застраховать дом на новых условиях?</h2>
-        <p>Оставьте заявку — рассчитаю стоимость полиса под ваш объект за один звонок.</br>Ваш персональный агент - Людмила Папина.</p>
+        <p>Оставьте заявку — рассчитаю стоимость полиса под ваш объект за один звонок.<br>Ваш персональный агент - Людмила Папина.</p>
       </div>
       <a class="btn" href="tel:+79776676455">
         <svg class="icon" style="width:18px;height:18px;color:#fff;"><use href="#i-phone"/></svg>
